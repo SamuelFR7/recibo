@@ -1,7 +1,12 @@
 import React from 'react'
+import { FarmDashboard } from '../components/FarmDashboard'
 
 function Fazendas() {
-  return <></>
+  return (
+    <>
+      <FarmDashboard />
+    </>
+  )
 }
 
 export default Fazendas
