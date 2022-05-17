@@ -39,7 +39,7 @@ function Dashboard() {
 
   useEffect(() => {
     async function getReceiptsData() {
-      const response = await api.get('http://localhost:3000/api/receipts')
+      const response = await api.get('/api/receipts')
       setReceipts(response.data)
     }
 

@@ -27,7 +27,7 @@ function FarmDashboard() {
 
   useEffect(() => {
     async function getFarmsData() {
-      const response = await api.get<IFarm[]>('http://localhost:3000/api/farms')
+      const response = await api.get<IFarm[]>('/api/farms')
       setFarms(response.data)
     }
 
