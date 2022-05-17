@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   ButtonsBox,
   DashboardContainer,
@@ -8,9 +8,26 @@ import {
 
 import { BiExport } from 'react-icons/bi'
 import { NewReceiptModal } from '../NewReceiptModal'
+import api from '../../services/api'
+
+interface IReceipt {
+  codigo: string
+  fazenda: string
+  numero: number
+  data: Date
+  valor: number
+  historico: string
+  beneficiarioNome: string
+  beneficiarioEndereco: string
+  beneficiarioDocumento: string
+  pagadorNome: string
+  pagadorEndereco: string
+  pagadorDocumento: string
+}
 
 function Dashboard() {
   const [isNewReceiptModalOpen, setIsNewReceiptModalOpen] = useState(false)
+  const [receipts, setReceipts] = useState<IReceipt[]>([])
 
   function handleOpenNewReceiptModal() {
     setIsNewReceiptModalOpen(true)
@@ -19,6 +36,15 @@ function Dashboard() {
   function handleCloseNewReceiptModal() {
     setIsNewReceiptModalOpen(false)
   }
+
+  useEffect(() => {
+    async function getReceiptsData() {
+      const response = await api.get('http://localhost:3000/api/receipts')
+      setReceipts(response.data)
+    }
+
+    getReceiptsData()
+  }, [])
 
   return (
     <DashboardContainer>
@@ -41,16 +67,18 @@ function Dashboard() {
             </thead>
 
             <tbody>
-              <tr>
-                <td>Fazenda 1</td>
-                <td>1</td>
-                <td>1000,00</td>
-                <td>
-                  <div className="imgButton">
-                    <BiExport />
-                  </div>
-                </td>
-              </tr>
+              {receipts.map((item) => (
+                <tr key={item.codigo}>
+                  <td>{item.fazenda}</td>
+                  <td>{item.numero}</td>
+                  <td>{item.valor}</td>
+                  <td>
+                    <div className="imgButton">
+                      <BiExport />
+                    </div>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
           <NewReceiptModal

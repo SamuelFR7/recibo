@@ -1,12 +1,13 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
+import { NextApiRequest, NextApiResponse } from 'next'
 
-function farms(request: NextApiRequest, response: NextApiResponse) {
-  response.json({
-    Fazendas: {
-      id: '1',
-      nome: 'Fazenda',
+export default function Receipt(
+  request: NextApiRequest,
+  response: NextApiResponse
+) {
+  response.json([
+    {
+      codigo: '1',
+      nome: 'Alvorada',
     },
-  })
+  ])
 }
-
-export default farms

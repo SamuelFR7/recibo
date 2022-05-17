@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import api from '../../services/api'
 import { NewFarmModal } from '../NewFarmModal'
 import {
   FarmButtonsBox,
@@ -7,8 +8,14 @@ import {
   FarmTableContainer,
 } from './styles'
 
+interface IFarm {
+  codigo: string
+  nome: string
+}
+
 function FarmDashboard() {
   const [isNewFarmModalOpen, setIsNewFarmModalOpen] = useState(false)
+  const [farms, setFarms] = useState<IFarm[]>([])
 
   function handleOpenNewFarmModal() {
     setIsNewFarmModalOpen(true)
@@ -17,6 +24,15 @@ function FarmDashboard() {
   function handleCloseNewFarmModal() {
     setIsNewFarmModalOpen(false)
   }
+
+  useEffect(() => {
+    async function getFarmsData() {
+      const response = await api.get<IFarm[]>('http://localhost:3000/api/farms')
+      setFarms(response.data)
+    }
+
+    getFarmsData()
+  }, [])
 
   return (
     <FarmDashboardContainer>
@@ -36,9 +52,11 @@ function FarmDashboard() {
             </thead>
 
             <tbody>
-              <tr>
-                <td>Fazenda 1</td>
-              </tr>
+              {farms.map((item) => (
+                <tr key={item.codigo}>
+                  <td>{item.nome}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
           <NewFarmModal
