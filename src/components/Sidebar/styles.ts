@@ -16,24 +16,6 @@ export const SidebarContent = styled.div`
   align-items: center;
 `
 
-export const UserContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  img {
-    border-radius: 50%;
-    width: 5rem;
-    height: 5rem;
-    margin-top: 2rem;
-  }
-
-  p {
-    font-size: 1rem;
-    margin-top: 1rem;
-  }
-`
-
 export const ButtonsContainer = styled.div`
   margin-top: 7rem;
   display: flex;
