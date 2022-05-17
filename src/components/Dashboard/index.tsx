@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   ButtonsBox,
   DashboardContainer,
@@ -7,14 +7,27 @@ import {
 } from './styles'
 
 import { BiExport } from 'react-icons/bi'
+import { NewReceiptModal } from '../NewReceiptModal'
 
 function Dashboard() {
+  const [isNewReceiptModalOpen, setIsNewReceiptModalOpen] = useState(false)
+
+  function handleOpenNewReceiptModal() {
+    setIsNewReceiptModalOpen(true)
+  }
+
+  function handleCloseNewReceiptModal() {
+    setIsNewReceiptModalOpen(false)
+  }
+
   return (
     <DashboardContainer>
       <DashboardContent>
         <ButtonsBox>
           <input placeholder="Pesquisar" type="search" />
-          <button type="button">Adicionar Recibo</button>
+          <button type="button" onClick={handleOpenNewReceiptModal}>
+            Adicionar Recibo
+          </button>
         </ButtonsBox>
         <TableContainer>
           <table>
@@ -40,6 +53,10 @@ function Dashboard() {
               </tr>
             </tbody>
           </table>
+          <NewReceiptModal
+            isOpen={isNewReceiptModalOpen}
+            onRequestClose={handleCloseNewReceiptModal}
+          />
         </TableContainer>
       </DashboardContent>
     </DashboardContainer>
