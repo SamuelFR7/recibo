@@ -60,5 +60,14 @@ export const ButtonsContainer = styled.div`
     &.active {
       background: #3e5ba8;
     }
+
+    div {
+      display: flex;
+      align-items: center;
+
+      p {
+        margin-left: 0.5rem;
+      }
+    }
   }
 `

@@ -8,6 +8,9 @@ import {
 } from './styles'
 import { ActiveLink } from '../ActiveLink'
 
+import { IoReceiptOutline } from 'react-icons/io5'
+import { GiGreenhouse } from 'react-icons/gi'
+
 function Sidebar() {
   const [userImg, setUserImg] = useState('')
 
@@ -32,10 +35,20 @@ function Sidebar() {
         </UserContainer>
         <ButtonsContainer>
           <ActiveLink activeClassName="active" href="/">
-            <button>Recibos</button>
+            <button>
+              <div>
+                <IoReceiptOutline />
+                <p>Recibos</p>
+              </div>
+            </button>
           </ActiveLink>
           <ActiveLink activeClassName="active" href="/fazendas">
-            <button>Fazendas</button>
+            <button>
+              <div>
+                <GiGreenhouse />
+                <p>Fazendas</p>
+              </div>
+            </button>
           </ActiveLink>
         </ButtonsContainer>
       </SidebarContent>
