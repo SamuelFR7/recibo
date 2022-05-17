@@ -4,7 +4,7 @@ import { theme } from '../../styles/Theme'
 export const DashboardContainer = styled.div``
 
 export const DashboardContent = styled.div`
-  padding: 10rem 10rem;
+  padding: 9rem 10rem;
 `
 
 export const ButtonsBox = styled.div`
@@ -30,5 +30,37 @@ export const ButtonsBox = styled.div`
     border: 0;
     border-radius: 0.25rem;
     width: 65vw;
+  }
+`
+
+export const TableContainer = styled.div`
+  margin-top: 2rem;
+
+  table {
+    width: 100%;
+    border-spacing: 0 0.5rem;
+
+    th {
+      color: ${theme.colors.textBody};
+      font-weight: 400;
+      padding: 1rem 2rem;
+      text-align: left;
+      line-height: 1.5rem;
+    }
+
+    td {
+      padding: 1rem 2rem;
+      border: 0;
+      background: ${theme.colors.shape};
+      color: ${theme.colors.text};
+
+      div {
+        padding-top: 0.3rem;
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
   }
 `

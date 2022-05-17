@@ -3,5 +3,7 @@ export const theme = {
     bg: '#F5F5F5',
     text: '#181B23',
     green: '#273c75',
+    shape: '#FFFFFF',
+    textBody: '#969cb3',
   },
 }
