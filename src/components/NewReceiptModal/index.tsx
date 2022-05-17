@@ -12,7 +12,7 @@ interface INewReceiptModalProps {
 function NewReceiptModal({ isOpen, onRequestClose }: INewReceiptModalProps) {
   const [Fazenda, setFazenda] = useState('')
   const [Numero, setNumero] = useState(0)
-  const [DataRecibo, setDataRecibo] = useState<Date>(new Date())
+  const [DataRecibo, setDataRecibo] = useState<Date | null>(new Date())
   const [Valor, setValor] = useState(0.0)
   const [Historico, setHistorico] = useState('')
   const [BeneficiarioNome, setBeneficiarioNome] = useState('')
@@ -69,7 +69,7 @@ function NewReceiptModal({ isOpen, onRequestClose }: INewReceiptModalProps) {
         />
         <input
           placeholder="Data"
-          value={DataRecibo.toString()}
+          value={DataRecibo?.toString()}
           type="date"
           onChange={(e) => setDataRecibo(e.target.valueAsDate)}
           required={true}
