@@ -7,7 +7,7 @@ export const SidebarContainer = styled.div`
 
 export const SidebarContent = styled.div`
   height: 100vh;
-  padding: 2.5rem 2rem;
+  padding: 2.5rem 2.5rem;
   display: flex;
   flex-direction: column;
   background-color: ${theme.colors.green};
@@ -48,6 +48,14 @@ export const ButtonsContainer = styled.div`
     padding: 0.5rem 7rem 0.5rem 1rem;
     border-radius: 1rem;
     text-align: left;
+
+    :nth-last-child(1) {
+      margin-top: 0.2rem;
+    }
+
+    &:hover {
+      background: #3e5ba8;
+    }
 
     &.active {
       background: #3e5ba8;

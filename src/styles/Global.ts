@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components'
+import styled, { createGlobalStyle } from 'styled-components'
 import { theme } from './Theme'
 
 const GlobalStyle = createGlobalStyle`
@@ -47,4 +47,10 @@ const GlobalStyle = createGlobalStyle`
     }
 `
 
-export { GlobalStyle }
+const Container = styled.div`
+  display: flex;
+  height: 100vh;
+  margin: 0 auto;
+`
+
+export { GlobalStyle, Container }
