@@ -3,27 +3,14 @@ import {
   ButtonsBox,
   DashboardContainer,
   DashboardContent,
+  ImgButton,
   TableContainer,
 } from './styles'
 
-import { BiExport } from 'react-icons/bi'
+import { BiExport, BiTrash } from 'react-icons/bi'
 import { NewReceiptModal } from '../NewReceiptModal'
 import api from '../../services/api'
-
-interface IReceipt {
-  codigo: string
-  fazenda: string
-  numero: number
-  data: Date
-  valor: number
-  historico: string
-  beneficiarioNome: string
-  beneficiarioEndereco: string
-  beneficiarioDocumento: string
-  pagadorNome: string
-  pagadorEndereco: string
-  pagadorDocumento: string
-}
+import { IReceipt } from '../../interfaces/IReceipt'
 
 function Dashboard() {
   const [isNewReceiptModalOpen, setIsNewReceiptModalOpen] = useState(false)
@@ -73,11 +60,19 @@ function Dashboard() {
                   <td>{item.fazenda}</td>
                   <td>{item.beneficiarioNome}</td>
                   <td>{item.numero}</td>
-                  <td>{item.valor}</td>
+                  <td className="valor">
+                    {new Intl.NumberFormat('pt-BR', {
+                      style: 'currency',
+                      currency: 'BRL',
+                    }).format(item.valor)}
+                  </td>
                   <td>
-                    <div className="imgButton">
-                      <BiExport />
-                    </div>
+                    <ImgButton>
+                      <BiExport size={32} />
+                    </ImgButton>
+                    <ImgButton>
+                      <BiTrash size={32} />
+                    </ImgButton>
                   </td>
                 </tr>
               ))}
