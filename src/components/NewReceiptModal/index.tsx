@@ -13,6 +13,9 @@ import {
   RecipientBox,
   SubmitBox,
 } from './styles'
+
+import InputMask from 'react-input-mask'
+
 import api from '../../services/api'
 import { IFarm } from '../../interfaces/IFarm'
 
@@ -23,6 +26,8 @@ interface INewReceiptModalProps {
 
 function NewReceiptModal({ isOpen, onRequestClose }: INewReceiptModalProps) {
   const [todasFazendas, setTodasFazendas] = useState<IFarm[]>([])
+  const [pagadorTipo, setPagadorTipo] = useState(0)
+  const [beneficiarioTipo, setBeneficiarioTipo] = useState(0)
   const [Fazenda, setFazenda] = useState<number | null>()
   const [DataRecibo, setDataRecibo] = useState<Date | null>(new Date())
   const [Valor, setValor] = useState(0.0)
@@ -38,6 +43,8 @@ function NewReceiptModal({ isOpen, onRequestClose }: INewReceiptModalProps) {
 
   function handleResetReceiptAndClose() {
     setFazenda(0)
+    setPagadorTipo(0)
+    setBeneficiarioTipo(0)
     setDataRecibo(new Date())
     setValor(0.0)
     setHistorico('')
@@ -61,6 +68,10 @@ function NewReceiptModal({ isOpen, onRequestClose }: INewReceiptModalProps) {
       setPagadorNome(selectedFarm.nomePagador)
       setPagadorEndereco(selectedFarm.enderecoPagador)
       if (selectedFarm.documentoPagador) {
+        if (selectedFarm.documentoPagador.length === 11) {
+          setPagadorTipo(1)
+        }
+
         setPagadorDocumento(selectedFarm.documentoPagador)
       }
     }
@@ -156,14 +167,26 @@ function NewReceiptModal({ isOpen, onRequestClose }: INewReceiptModalProps) {
               <DocumentBox>
                 <div>
                   <p>Tipo</p>
-                  <select>
-                    <option selected>CNPJ</option>
-                    <option>CPF</option>
+                  <select
+                    onChange={(e) =>
+                      setBeneficiarioTipo(Number(e.target.value))
+                    }
+                  >
+                    <option selected value={0}>
+                      CNPJ
+                    </option>
+                    <option value={1}>CPF</option>
                   </select>
                 </div>
                 <div className="documento">
-                  <p>Documento</p>
-                  <input
+                  <p>{beneficiarioTipo === 0 ? 'CNPJ' : 'CPF'}</p>
+                  <InputMask
+                    mask={
+                      beneficiarioTipo === 0
+                        ? '99.999.999/9999-99'
+                        : '999.999.999-99'
+                    }
+                    alwaysShowMask={true}
                     value={BeneficiarioDocumento}
                     onChange={(e) => setBeneficiarioDocumento(e.target.value)}
                   />
@@ -196,14 +219,26 @@ function NewReceiptModal({ isOpen, onRequestClose }: INewReceiptModalProps) {
               <DocumentBox>
                 <div>
                   <p>Tipo</p>
-                  <select>
-                    <option selected>CNPJ</option>
-                    <option>CPF</option>
+                  <select
+                    onChange={(e) => setPagadorTipo(Number(e.target.value))}
+                  >
+                    <option selected={pagadorTipo === 0} value={0}>
+                      CNPJ
+                    </option>
+                    <option selected={pagadorTipo === 1} value={1}>
+                      CPF
+                    </option>
                   </select>
                 </div>
                 <div className="documento">
-                  <p>Documento</p>
-                  <input
+                  <p>{pagadorTipo === 0 ? 'CPNJ' : 'CPF'}</p>
+                  <InputMask
+                    mask={
+                      pagadorTipo === 0
+                        ? '99.999.999/9999-99'
+                        : '999.999.999-99'
+                    }
+                    alwaysShowMask={true}
                     value={PagadorDocumento}
                     onChange={(e) => setPagadorDocumento(e.target.value)}
                   />

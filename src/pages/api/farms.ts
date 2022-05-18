@@ -10,7 +10,7 @@ export default function Receipt(
       nome: 'Alvorada',
       nomePagador: 'Vander',
       enderecoPagador: 'Rua 2',
-      documentoPagador: '000.000.000-00',
+      documentoPagador: '00000000000',
     },
   ])
 }
