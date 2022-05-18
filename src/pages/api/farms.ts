@@ -6,8 +6,11 @@ export default function Receipt(
 ) {
   response.json([
     {
-      codigo: '1',
+      codigo: 1,
       nome: 'Alvorada',
+      nomePagador: 'Vander',
+      enderecoPagador: 'Rua 2',
+      documentoPagador: '000.000.000-00',
     },
   ])
 }
