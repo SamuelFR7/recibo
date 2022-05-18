@@ -16,6 +16,7 @@ export const FormContainer = styled.form`
   textarea {
     border: 1px solid #d7d7d7;
     font-weight: 400;
+    font-size: 1rem;
   }
 
   button[type='submit'] {
@@ -94,7 +95,7 @@ export const InfosBox = styled.div`
 
   div {
     .endereco {
-      width: 25rem;
+      width: 23rem;
     }
   }
 `

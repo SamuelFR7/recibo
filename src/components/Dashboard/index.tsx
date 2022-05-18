@@ -60,9 +60,10 @@ function Dashboard() {
             <thead>
               <tr>
                 <th>Fazenda</th>
+                <th>Beneficiario</th>
                 <th>Numero</th>
                 <th>Valor</th>
-                <th>Extrato</th>
+                <th>Ações</th>
               </tr>
             </thead>
 
@@ -70,6 +71,7 @@ function Dashboard() {
               {receipts.map((item) => (
                 <tr key={item.codigo}>
                   <td>{item.fazenda}</td>
+                  <td>{item.beneficiarioNome}</td>
                   <td>{item.numero}</td>
                   <td>{item.valor}</td>
                   <td>
