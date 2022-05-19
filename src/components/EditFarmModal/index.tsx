@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from 'react'
+import React, { FormEvent, useEffect, useState } from 'react'
 import Modal from 'react-modal'
 
 import { AiOutlineClose } from 'react-icons/ai'
@@ -18,12 +18,19 @@ import api from '../../services/api'
 import { useFarms } from '../../hooks/useFarms'
 import { IFarm } from '../../interfaces/IFarm'
 
-interface INewFarmModalProps {
+interface IEditFarmModalProps {
   isOpen: boolean
   onRequestClose: () => void
+  farmToEdit: number
+  setFarmToEdit: React.Dispatch<React.SetStateAction<number>>
 }
 
-function NewFarmModal({ isOpen, onRequestClose }: INewFarmModalProps) {
+function EditFarmModal({
+  isOpen,
+  onRequestClose,
+  farmToEdit,
+  setFarmToEdit,
+}: IEditFarmModalProps) {
   const { setFarms } = useFarms()
   const [Nome, setNome] = useState('')
   const [pagadorNome, setPagadorNome] = useState('')
@@ -31,10 +38,10 @@ function NewFarmModal({ isOpen, onRequestClose }: INewFarmModalProps) {
   const [pagadorDocumento, setPagadorDocumento] = useState('')
   const [pagadorTipo, setPagadorTipo] = useState(0)
 
-  async function handleAddFarm(e: FormEvent) {
+  async function handleEditFarm(e: FormEvent) {
     e.preventDefault()
-    await api.post('/api/fazenda', {
-      id: 0,
+    await api.put('/api/fazenda', {
+      id: farmToEdit,
       Nome,
       pagadorNome,
       pagadorEndereco,
@@ -46,6 +53,7 @@ function NewFarmModal({ isOpen, onRequestClose }: INewFarmModalProps) {
   }
 
   function handleResetFarmAndClose() {
+    setFarmToEdit(0)
     setNome('')
     setPagadorNome('')
     setPagadorEndereco('')
@@ -53,6 +61,21 @@ function NewFarmModal({ isOpen, onRequestClose }: INewFarmModalProps) {
     setPagadorTipo(0)
     onRequestClose()
   }
+
+  useEffect(() => {
+    async function getFarmToEdit() {
+      if (farmToEdit) {
+        const { data } = await api.get<IFarm>(`/api/fazenda/${farmToEdit}`)
+        setNome(data.nome)
+        setPagadorNome(data.pagadorNome)
+        setPagadorEndereco(data.pagadorEndereco)
+        setPagadorDocumento(data.pagadorDocumento)
+        setPagadorTipo(data.pagadorDocumento.length === 11 ? 1 : 0)
+      }
+    }
+
+    getFarmToEdit()
+  }, [farmToEdit])
 
   return (
     <Modal
@@ -64,7 +87,7 @@ function NewFarmModal({ isOpen, onRequestClose }: INewFarmModalProps) {
       <button className="react-modal-close" onClick={handleResetFarmAndClose}>
         <AiOutlineClose size={32} />
       </button>
-      <FarmFormContainer onSubmit={(e) => handleAddFarm(e)}>
+      <FarmFormContainer onSubmit={(e) => handleEditFarm(e)}>
         <h2>Nova Fazenda</h2>
         <HighBox>
           <div>
@@ -105,7 +128,7 @@ function NewFarmModal({ isOpen, onRequestClose }: INewFarmModalProps) {
                   <p>Tipo</p>
                   <select
                     onChange={(e) => setPagadorTipo(Number(e.target.value))}
-                    defaultValue={0}
+                    value={pagadorTipo}
                   >
                     <option value={0}>CNPJ</option>
                     <option value={1}>CPF</option>
@@ -134,4 +157,4 @@ function NewFarmModal({ isOpen, onRequestClose }: INewFarmModalProps) {
   )
 }
 
-export { NewFarmModal }
+export { EditFarmModal }

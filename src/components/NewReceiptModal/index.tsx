@@ -195,7 +195,6 @@ function NewReceiptModal({ isOpen, onRequestClose }: INewReceiptModalProps) {
                   onChange={(e) =>
                     setBeneficiarioEndereco(e.target.value.toUpperCase())
                   }
-                  required={true}
                 />
               </div>
               <DocumentBox>
@@ -248,7 +247,6 @@ function NewReceiptModal({ isOpen, onRequestClose }: INewReceiptModalProps) {
                   onChange={(e) =>
                     setPagadorEndereco(e.target.value.toUpperCase())
                   }
-                  required={true}
                 />
               </div>
               <DocumentBox>
@@ -285,7 +283,6 @@ function NewReceiptModal({ isOpen, onRequestClose }: INewReceiptModalProps) {
             <textarea
               value={Historico.toUpperCase()}
               onChange={(e) => setHistorico(e.target.value.toUpperCase())}
-              required={true}
             />
           </div>
         </HistoricBox>

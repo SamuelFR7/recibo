@@ -3,5 +3,5 @@ export interface IFarm {
   nome: string
   pagadorNome: string
   pagadorEndereco: string
-  pagadorDocumento?: string
+  pagadorDocumento: string
 }

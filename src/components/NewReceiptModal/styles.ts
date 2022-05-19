@@ -56,9 +56,6 @@ export const HighBox = styled.div`
       padding: 0.5rem;
     }
 
-    .valor {
-    }
-
     & + div {
       margin-left: 1.5rem;
     }

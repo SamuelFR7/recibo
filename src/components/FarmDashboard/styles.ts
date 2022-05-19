@@ -54,13 +54,18 @@ export const FarmTableContainer = styled.div`
       background: ${theme.colors.shape};
       color: ${theme.colors.text};
 
-      div {
-        padding-top: 0.3rem;
-
-        &:hover {
-          cursor: pointer;
-        }
+      :nth-last-child(1) {
+        display: flex;
+        padding: 0 2rem;
       }
     }
+  }
+`
+
+export const ImgButton = styled.div`
+  padding: 1rem;
+
+  :hover {
+    cursor: pointer;
   }
 `
