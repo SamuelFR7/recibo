@@ -21,18 +21,25 @@ import { IFarm } from '../../interfaces/IFarm'
 import { useReceipts } from '../../hooks/useReceipts'
 import { IReceipt } from '../../interfaces/IReceipt'
 
-interface INewReceiptModalProps {
+interface IEditReceiptModalProps {
   isOpen: boolean
   onRequestClose: () => void
+  receiptToEdit: number
+  setReceiptToEdit: React.Dispatch<React.SetStateAction<number>>
 }
 
-function NewReceiptModal({ isOpen, onRequestClose }: INewReceiptModalProps) {
+function EditReceiptModal({
+  isOpen,
+  onRequestClose,
+  receiptToEdit,
+  setReceiptToEdit,
+}: IEditReceiptModalProps) {
   const { setReceipts } = useReceipts()
-  const [todasFazendas, setTodasFazendas] = useState<IFarm[]>([])
   const [pagadorTipo, setPagadorTipo] = useState(0)
   const [beneficiarioTipo, setBeneficiarioTipo] = useState(0)
-  const [Fazenda, setFazenda] = useState<number | null>()
+  const [Fazenda, setFazenda] = useState<IFarm>()
   const [DataRecibo, setDataRecibo] = useState<Date>(new Date())
+  const [Numero, setNumero] = useState(0)
   const [Valor, setValor] = useState(0)
   const [Historico, setHistorico] = useState('')
   const [BeneficiarioNome, setBeneficiarioNome] = useState('')
@@ -42,20 +49,14 @@ function NewReceiptModal({ isOpen, onRequestClose }: INewReceiptModalProps) {
   const [PagadorEndereco, setPagadorEndereco] = useState('')
   const [PagadorDocumento, setPagadorDocumento] = useState('')
 
-  async function handleAddReceipt(e: FormEvent) {
+  async function handleEditReceipt(e: FormEvent) {
     e.preventDefault()
-    await api.post('/api/recibo', {
-      Id: '0',
-      fazenda: {
-        Id: Fazenda,
-        Nome: '.',
-        PagadorNome: '',
-        PagadorEndereco: '',
-        PagadorDocumento: '',
-      },
-      Numero: '0',
+    await api.put('/api/recibo', {
+      Id: receiptToEdit,
       Data: DataRecibo,
+      Fazenda,
       Valor,
+      Numero,
       Historico,
       BeneficiarioNome,
       BeneficiarioEndereco,
@@ -70,7 +71,7 @@ function NewReceiptModal({ isOpen, onRequestClose }: INewReceiptModalProps) {
   }
 
   function handleResetReceiptAndClose() {
-    setFazenda(0)
+    setReceiptToEdit(0)
     setPagadorTipo(0)
     setBeneficiarioTipo(0)
     setDataRecibo(new Date())
@@ -85,32 +86,28 @@ function NewReceiptModal({ isOpen, onRequestClose }: INewReceiptModalProps) {
     onRequestClose()
   }
 
-  function handleSelectFarm(code: string) {
-    const codigo = Number(code)
-    setFazenda(codigo)
-    const selectedFarm = todasFazendas.find((element) => element.id === codigo)
-
-    if (selectedFarm) {
-      setPagadorNome(selectedFarm.pagadorNome)
-      setPagadorEndereco(selectedFarm.pagadorEndereco)
-      if (selectedFarm.pagadorDocumento) {
-        if (selectedFarm.pagadorDocumento.length === 11) {
-          setPagadorTipo(1)
-        }
-
-        setPagadorDocumento(selectedFarm.pagadorDocumento)
+  useEffect(() => {
+    async function getReceiptToEdit() {
+      if (receiptToEdit) {
+        const { data } = await api.get<IReceipt>(`/api/recibo/${receiptToEdit}`)
+        setFazenda(data.fazenda)
+        setDataRecibo(data.data)
+        setValor(data.valor)
+        setBeneficiarioNome(data.beneficiarioNome)
+        setBeneficiarioEndereco(data.beneficiarioEndereco)
+        setBeneficiarioDocumento(data.beneficiarioDocumento)
+        setBeneficiarioTipo(data.beneficiarioDocumento.length === 11 ? 1 : 0)
+        setPagadorNome(data.pagadorNome)
+        setPagadorEndereco(data.pagadorEndereco)
+        setPagadorDocumento(data.pagadorDocumento)
+        setPagadorTipo(data.pagadorDocumento.length === 11 ? 1 : 0)
+        setHistorico(data.historico)
+        setNumero(data.numero)
       }
     }
-  }
 
-  useEffect(() => {
-    async function getFarmsData() {
-      const response = await api.get<IFarm[]>('/api/fazenda')
-      setTodasFazendas(response.data)
-    }
-
-    getFarmsData()
-  }, [])
+    getReceiptToEdit()
+  }, [receiptToEdit])
 
   return (
     <Modal
@@ -126,32 +123,18 @@ function NewReceiptModal({ isOpen, onRequestClose }: INewReceiptModalProps) {
       >
         <AiOutlineClose />
       </button>
-      <FormContainer onSubmit={(e) => handleAddReceipt(e)}>
-        <h2>Novo recibo</h2>
+      <FormContainer onSubmit={(e) => handleEditReceipt(e)}>
+        <h2>Editar recibo</h2>
         <HighBox>
           <div>
             <p>Fazenda</p>
-            <select
-              onChange={(e) => handleSelectFarm(e.target.value)}
-              required={true}
-              defaultValue={-1}
-            >
-              <option disabled value={-1}>
-                Selecionar
-              </option>
-              {todasFazendas?.map((farms) => {
-                return (
-                  <option value={farms.id} key={farms.id}>
-                    {farms.nome}
-                  </option>
-                )
-              })}
-            </select>
+            <input disabled={true} value={Fazenda?.nome}></input>
           </div>
           <div>
             <p>Data</p>
             <input
               type="date"
+              value={new Date(DataRecibo).toISOString().split('T')[0]}
               onChange={(e) =>
                 setDataRecibo(
                   e.target.valueAsDate != null
@@ -190,7 +173,7 @@ function NewReceiptModal({ isOpen, onRequestClose }: INewReceiptModalProps) {
               <div>
                 <p>Endereco</p>
                 <input
-                  value={BeneficiarioEndereco.toUpperCase()}
+                  value={BeneficiarioEndereco?.toUpperCase()}
                   className="endereco"
                   onChange={(e) =>
                     setBeneficiarioEndereco(e.target.value.toUpperCase())
@@ -205,7 +188,7 @@ function NewReceiptModal({ isOpen, onRequestClose }: INewReceiptModalProps) {
                     onChange={(e) =>
                       setBeneficiarioTipo(Number(e.target.value))
                     }
-                    defaultValue={0}
+                    value={beneficiarioTipo}
                   >
                     <option value={0}>CNPJ</option>
                     <option value={1}>CPF</option>
@@ -297,4 +280,4 @@ function NewReceiptModal({ isOpen, onRequestClose }: INewReceiptModalProps) {
   )
 }
 
-export { NewReceiptModal }
+export { EditReceiptModal }

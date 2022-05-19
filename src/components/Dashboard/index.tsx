@@ -13,10 +13,13 @@ import { NewReceiptModal } from '../NewReceiptModal'
 import api from '../../services/api'
 import { IReceipt } from '../../interfaces/IReceipt'
 import { useReceipts } from '../../hooks/useReceipts'
+import { EditReceiptModal } from '../EditReceiptModal'
 
 function Dashboard() {
   const { receipts, setReceipts } = useReceipts()
   const [isNewReceiptModalOpen, setIsNewReceiptModalOpen] = useState(false)
+  const [isEditReceiptModalOpen, setIsEditReceiptModalOpen] = useState(false)
+  const [receiptToEdit, setReceiptToEdit] = useState(0)
 
   function handleOpenNewReceiptModal() {
     setIsNewReceiptModalOpen(true)
@@ -24,6 +27,15 @@ function Dashboard() {
 
   function handleCloseNewReceiptModal() {
     setIsNewReceiptModalOpen(false)
+  }
+
+  function handleOpenEditReceiptModal(id: number) {
+    setReceiptToEdit(id)
+    setIsEditReceiptModalOpen(true)
+  }
+
+  function handleCloseEditReceiptModal() {
+    setIsEditReceiptModalOpen(false)
   }
 
   async function handleDeleteReceipt(id: number) {
@@ -80,7 +92,10 @@ function Dashboard() {
                       <BiExport size={32} />
                     </ImgButton>
                     <ReactTooltip effect="solid" />
-                    <ImgButton data-tip="Editar">
+                    <ImgButton
+                      data-tip="Editar"
+                      onClick={() => handleOpenEditReceiptModal(item.id)}
+                    >
                       <BiPencil size={32} />
                     </ImgButton>
                     <ReactTooltip effect="solid" />
@@ -105,6 +120,12 @@ function Dashboard() {
           <NewReceiptModal
             isOpen={isNewReceiptModalOpen}
             onRequestClose={handleCloseNewReceiptModal}
+          />
+          <EditReceiptModal
+            isOpen={isEditReceiptModalOpen}
+            onRequestClose={handleCloseEditReceiptModal}
+            receiptToEdit={receiptToEdit}
+            setReceiptToEdit={setReceiptToEdit}
           />
         </TableContainer>
       </DashboardContent>
