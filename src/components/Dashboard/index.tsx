@@ -12,10 +12,11 @@ import { BiExport, BiPencil, BiTrash } from 'react-icons/bi'
 import { NewReceiptModal } from '../NewReceiptModal'
 import api from '../../services/api'
 import { IReceipt } from '../../interfaces/IReceipt'
+import { useReceipts } from '../../hooks/useReceipts'
 
 function Dashboard() {
+  const { receipts, setReceipts } = useReceipts()
   const [isNewReceiptModalOpen, setIsNewReceiptModalOpen] = useState(false)
-  const [receipts, setReceipts] = useState<IReceipt[]>([])
 
   function handleOpenNewReceiptModal() {
     setIsNewReceiptModalOpen(true)

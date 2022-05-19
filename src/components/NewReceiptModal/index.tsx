@@ -18,6 +18,8 @@ import InputMask from 'react-input-mask'
 
 import api from '../../services/api'
 import { IFarm } from '../../interfaces/IFarm'
+import { useReceipts } from '../../hooks/useReceipts'
+import { IReceipt } from '../../interfaces/IReceipt'
 
 interface INewReceiptModalProps {
   isOpen: boolean
@@ -25,6 +27,7 @@ interface INewReceiptModalProps {
 }
 
 function NewReceiptModal({ isOpen, onRequestClose }: INewReceiptModalProps) {
+  const { setReceipts } = useReceipts()
   const [todasFazendas, setTodasFazendas] = useState<IFarm[]>([])
   const [pagadorTipo, setPagadorTipo] = useState(0)
   const [beneficiarioTipo, setBeneficiarioTipo] = useState(0)
@@ -61,6 +64,8 @@ function NewReceiptModal({ isOpen, onRequestClose }: INewReceiptModalProps) {
       PagadorEndereco,
       PagadorDocumento,
     })
+    const response = await api.get<IReceipt[]>('/api/recibo')
+    setReceipts(response.data)
     handleResetReceiptAndClose()
   }
 
