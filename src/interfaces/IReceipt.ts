@@ -1,6 +1,8 @@
+import { IFarm } from './IFarm'
+
 export interface IReceipt {
-  codigo: string
-  fazenda: string
+  id: number
+  fazenda: IFarm
   numero: number
   data: Date
   valor: number

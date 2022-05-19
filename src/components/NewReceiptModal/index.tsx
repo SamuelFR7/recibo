@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { FormEvent, useEffect, useState } from 'react'
 import Modal from 'react-modal'
 
 import { AiOutlineClose } from 'react-icons/ai'
@@ -29,7 +29,7 @@ function NewReceiptModal({ isOpen, onRequestClose }: INewReceiptModalProps) {
   const [pagadorTipo, setPagadorTipo] = useState(0)
   const [beneficiarioTipo, setBeneficiarioTipo] = useState(0)
   const [Fazenda, setFazenda] = useState<number | null>()
-  const [DataRecibo, setDataRecibo] = useState<Date | null>(new Date())
+  const [DataRecibo, setDataRecibo] = useState<Date>(new Date())
   const [Valor, setValor] = useState(0)
   const [Historico, setHistorico] = useState('')
   const [BeneficiarioNome, setBeneficiarioNome] = useState('')
@@ -39,7 +39,30 @@ function NewReceiptModal({ isOpen, onRequestClose }: INewReceiptModalProps) {
   const [PagadorEndereco, setPagadorEndereco] = useState('')
   const [PagadorDocumento, setPagadorDocumento] = useState('')
 
-  function handleAddReceipt() {}
+  async function handleAddReceipt(e: FormEvent) {
+    e.preventDefault()
+    await api.post('/api/recibo', {
+      Id: '0',
+      fazenda: {
+        Id: Fazenda,
+        Nome: '.',
+        PagadorNome: '',
+        PagadorEndereco: '',
+        PagadorDocumento: '',
+      },
+      Numero: '0',
+      Data: DataRecibo,
+      Valor,
+      Historico,
+      BeneficiarioNome,
+      BeneficiarioEndereco,
+      BeneficiarioDocumento,
+      PagadorNome,
+      PagadorEndereco,
+      PagadorDocumento,
+    })
+    handleResetReceiptAndClose()
+  }
 
   function handleResetReceiptAndClose() {
     setFazenda(0)
@@ -60,26 +83,24 @@ function NewReceiptModal({ isOpen, onRequestClose }: INewReceiptModalProps) {
   function handleSelectFarm(code: string) {
     const codigo = Number(code)
     setFazenda(codigo)
-    const selectedFarm = todasFazendas.find(
-      (element) => element.codigo === codigo
-    )
+    const selectedFarm = todasFazendas.find((element) => element.id === codigo)
 
     if (selectedFarm) {
-      setPagadorNome(selectedFarm.nomePagador)
-      setPagadorEndereco(selectedFarm.enderecoPagador)
-      if (selectedFarm.documentoPagador) {
-        if (selectedFarm.documentoPagador.length === 11) {
+      setPagadorNome(selectedFarm.pagadorNome)
+      setPagadorEndereco(selectedFarm.pagadorEndereco)
+      if (selectedFarm.pagadorDocumento) {
+        if (selectedFarm.pagadorDocumento.length === 11) {
           setPagadorTipo(1)
         }
 
-        setPagadorDocumento(selectedFarm.documentoPagador)
+        setPagadorDocumento(selectedFarm.pagadorDocumento)
       }
     }
   }
 
   useEffect(() => {
     async function getFarmsData() {
-      const response = await api.get<IFarm[]>('/api/farms')
+      const response = await api.get<IFarm[]>('/api/fazenda')
       setTodasFazendas(response.data)
     }
 
@@ -100,7 +121,7 @@ function NewReceiptModal({ isOpen, onRequestClose }: INewReceiptModalProps) {
       >
         <AiOutlineClose />
       </button>
-      <FormContainer onSubmit={handleAddReceipt}>
+      <FormContainer onSubmit={(e) => handleAddReceipt(e)}>
         <h2>Novo recibo</h2>
         <HighBox>
           <div>
@@ -108,13 +129,14 @@ function NewReceiptModal({ isOpen, onRequestClose }: INewReceiptModalProps) {
             <select
               onChange={(e) => handleSelectFarm(e.target.value)}
               required={true}
+              defaultValue={-1}
             >
-              <option disabled selected>
+              <option disabled value={-1}>
                 Selecionar
               </option>
               {todasFazendas?.map((farms) => {
                 return (
-                  <option value={farms.codigo} key={farms.codigo}>
+                  <option value={farms.id} key={farms.id}>
                     {farms.nome}
                   </option>
                 )
@@ -124,17 +146,20 @@ function NewReceiptModal({ isOpen, onRequestClose }: INewReceiptModalProps) {
           <div>
             <p>Data</p>
             <input
-              placeholder="Data"
-              value={DataRecibo?.toString()}
               type="date"
-              onChange={(e) => setDataRecibo(e.target.valueAsDate)}
+              onChange={(e) =>
+                setDataRecibo(
+                  e.target.valueAsDate != null
+                    ? e.target.valueAsDate
+                    : new Date()
+                )
+              }
               required={true}
             />
           </div>
           <div>
             <p>Valor</p>
             <input
-              placeholder="Valor"
               className="valor"
               type="number"
               value={Valor}
@@ -149,8 +174,10 @@ function NewReceiptModal({ isOpen, onRequestClose }: INewReceiptModalProps) {
             <NameBox>
               <p>Nome</p>
               <input
-                value={BeneficiarioNome}
-                onChange={(e) => setBeneficiarioNome(e.target.value)}
+                value={BeneficiarioNome.toUpperCase()}
+                onChange={(e) =>
+                  setBeneficiarioNome(e.target.value.toUpperCase())
+                }
                 required={true}
               />
             </NameBox>
@@ -158,9 +185,11 @@ function NewReceiptModal({ isOpen, onRequestClose }: INewReceiptModalProps) {
               <div>
                 <p>Endereco</p>
                 <input
-                  value={BeneficiarioEndereco}
+                  value={BeneficiarioEndereco.toUpperCase()}
                   className="endereco"
-                  onChange={(e) => setBeneficiarioEndereco(e.target.value)}
+                  onChange={(e) =>
+                    setBeneficiarioEndereco(e.target.value.toUpperCase())
+                  }
                   required={true}
                 />
               </div>
@@ -171,10 +200,9 @@ function NewReceiptModal({ isOpen, onRequestClose }: INewReceiptModalProps) {
                     onChange={(e) =>
                       setBeneficiarioTipo(Number(e.target.value))
                     }
+                    defaultValue={0}
                   >
-                    <option selected value={0}>
-                      CNPJ
-                    </option>
+                    <option value={0}>CNPJ</option>
                     <option value={1}>CPF</option>
                   </select>
                 </div>
@@ -201,8 +229,8 @@ function NewReceiptModal({ isOpen, onRequestClose }: INewReceiptModalProps) {
             <NameBox>
               <p>Nome</p>
               <input
-                value={PagadorNome}
-                onChange={(e) => setPagadorNome(e.target.value)}
+                value={PagadorNome.toUpperCase()}
+                onChange={(e) => setPagadorNome(e.target.value.toUpperCase())}
                 required={true}
               />
             </NameBox>
@@ -210,9 +238,11 @@ function NewReceiptModal({ isOpen, onRequestClose }: INewReceiptModalProps) {
               <div>
                 <p>Endereco</p>
                 <input
-                  value={PagadorEndereco}
+                  value={PagadorEndereco.toUpperCase()}
                   className="endereco"
-                  onChange={(e) => setPagadorEndereco(e.target.value)}
+                  onChange={(e) =>
+                    setPagadorEndereco(e.target.value.toUpperCase())
+                  }
                   required={true}
                 />
               </div>
@@ -221,13 +251,10 @@ function NewReceiptModal({ isOpen, onRequestClose }: INewReceiptModalProps) {
                   <p>Tipo</p>
                   <select
                     onChange={(e) => setPagadorTipo(Number(e.target.value))}
+                    value={pagadorTipo}
                   >
-                    <option selected={pagadorTipo === 0} value={0}>
-                      CNPJ
-                    </option>
-                    <option selected={pagadorTipo === 1} value={1}>
-                      CPF
-                    </option>
+                    <option value={0}>CNPJ</option>
+                    <option value={1}>CPF</option>
                   </select>
                 </div>
                 <div className="documento">
@@ -251,8 +278,8 @@ function NewReceiptModal({ isOpen, onRequestClose }: INewReceiptModalProps) {
           <p>Histórico</p>
           <div>
             <textarea
-              value={Historico}
-              onChange={(e) => setHistorico(e.target.value)}
+              value={Historico.toUpperCase()}
+              onChange={(e) => setHistorico(e.target.value.toUpperCase())}
               required={true}
             />
           </div>

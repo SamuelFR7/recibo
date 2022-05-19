@@ -1,7 +1,7 @@
 export interface IFarm {
-  codigo: number
+  id: number
   nome: string
-  nomePagador: string
-  enderecoPagador: string
-  documentoPagador?: string
+  pagadorNome: string
+  pagadorEndereco: string
+  pagadorDocumento?: string
 }

@@ -57,7 +57,6 @@ export const HighBox = styled.div`
     }
 
     .valor {
-      text-align: right;
     }
 
     & + div {

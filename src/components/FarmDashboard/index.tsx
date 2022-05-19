@@ -27,7 +27,7 @@ function FarmDashboard() {
 
   useEffect(() => {
     async function getFarmsData() {
-      const response = await api.get<IFarm[]>('/api/farms')
+      const response = await api.get<IFarm[]>('/api/fazenda')
       setFarms(response.data)
     }
 

@@ -7,7 +7,8 @@ import {
   TableContainer,
 } from './styles'
 
-import { BiExport, BiTrash } from 'react-icons/bi'
+import ReactTooltip from 'react-tooltip'
+import { BiExport, BiPencil, BiTrash } from 'react-icons/bi'
 import { NewReceiptModal } from '../NewReceiptModal'
 import api from '../../services/api'
 import { IReceipt } from '../../interfaces/IReceipt'
@@ -24,9 +25,15 @@ function Dashboard() {
     setIsNewReceiptModalOpen(false)
   }
 
+  async function handleDeleteReceipt(id: number) {
+    await api.delete(`/api/recibo/${id}`)
+    const response = await api.get<IReceipt[]>('/api/recibo')
+    setReceipts(response.data)
+  }
+
   useEffect(() => {
     async function getReceiptsData() {
-      const response = await api.get('/api/receipts')
+      const response = await api.get<IReceipt[]>('/api/recibo')
       setReceipts(response.data)
     }
 
@@ -56,8 +63,8 @@ function Dashboard() {
 
             <tbody>
               {receipts.map((item) => (
-                <tr key={item.codigo}>
-                  <td>{item.fazenda}</td>
+                <tr key={item.id}>
+                  <td>{item.fazenda.nome}</td>
                   <td>{item.beneficiarioNome}</td>
                   <td>{item.numero}</td>
                   <td className="valor">
@@ -67,10 +74,26 @@ function Dashboard() {
                     }).format(item.valor)}
                   </td>
                   <td>
-                    <ImgButton>
+                    <ReactTooltip effect="solid" />
+                    <ImgButton data-tip="Imprimir">
                       <BiExport size={32} />
                     </ImgButton>
-                    <ImgButton>
+                    <ReactTooltip effect="solid" />
+                    <ImgButton data-tip="Editar">
+                      <BiPencil size={32} />
+                    </ImgButton>
+                    <ReactTooltip effect="solid" />
+                    <ImgButton
+                      data-tip="Excluir"
+                      onClick={() => {
+                        if (
+                          window.confirm(
+                            'Certeza de que você deseja deletar este item?'
+                          )
+                        )
+                          handleDeleteReceipt(item.id)
+                      }}
+                    >
                       <BiTrash size={32} />
                     </ImgButton>
                   </td>
