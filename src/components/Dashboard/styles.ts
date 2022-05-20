@@ -29,7 +29,7 @@ export const ButtonsBox = styled.div`
     padding: 1rem 2rem;
     border: 0;
     border-radius: 0.25rem;
-    width: 65vw;
+    width: 50vw;
   }
 `
 

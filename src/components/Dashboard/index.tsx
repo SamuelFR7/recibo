@@ -15,28 +15,37 @@ import { useReceipts } from '../../hooks/useReceipts'
 import { EditReceiptModal } from '../EditReceiptModal'
 import { PaginationContainer } from '../Pagination'
 import { IReceiptsRequest } from '../../interfaces/IRceiptsRequest'
+import { PrintListModal } from '../PrintListModal'
 
 function Dashboard() {
   const { receipts, setReceipts, currentPage } = useReceipts()
   const [isNewReceiptModalOpen, setIsNewReceiptModalOpen] = useState(false)
   const [isEditReceiptModalOpen, setIsEditReceiptModalOpen] = useState(false)
+  const [isPrintListModalOpen, setIsPrintListModalOpen] = useState(false)
   const [receiptToEdit, setReceiptToEdit] = useState(0)
-
-  function handleOpenNewReceiptModal() {
-    setIsNewReceiptModalOpen(true)
-  }
 
   function handleCloseNewReceiptModal() {
     setIsNewReceiptModalOpen(false)
   }
 
+  function handleCloseEditReceiptModal() {
+    setIsEditReceiptModalOpen(false)
+  }
+
+  function handleClosePrintListModal() {
+    setIsPrintListModalOpen(false)
+  }
+
+  function handleOpenNewReceiptModal() {
+    setIsNewReceiptModalOpen(true)
+  }
   function handleOpenEditReceiptModal(id: number) {
     setReceiptToEdit(id)
     setIsEditReceiptModalOpen(true)
   }
 
-  function handleCloseEditReceiptModal() {
-    setIsEditReceiptModalOpen(false)
+  function handleOpenPrintListModal() {
+    setIsPrintListModalOpen(true)
   }
 
   async function handleDeleteReceipt(id: number) {
@@ -71,6 +80,12 @@ function Dashboard() {
           <input placeholder="Pesquisar" type="search" />
           <button type="button" onClick={handleOpenNewReceiptModal}>
             Adicionar Recibo
+          </button>
+          <button type="button" onClick={handleOpenPrintListModal}>
+            Imprimir Listagem
+          </button>
+          <button type="button" onClick={handleOpenNewReceiptModal}>
+            Imprimir Recibos
           </button>
         </ButtonsBox>
         <TableContainer>
@@ -141,6 +156,10 @@ function Dashboard() {
             onRequestClose={handleCloseEditReceiptModal}
             receiptToEdit={receiptToEdit}
             setReceiptToEdit={setReceiptToEdit}
+          />
+          <PrintListModal
+            isOpen={isPrintListModalOpen}
+            onRequestClose={handleClosePrintListModal}
           />
         </TableContainer>
       </DashboardContent>
