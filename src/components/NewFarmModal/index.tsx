@@ -60,6 +60,7 @@ function NewFarmModal({ isOpen, onRequestClose }: INewFarmModalProps) {
       onRequestClose={handleResetFarmAndClose}
       overlayClassName="react-modal-overlay"
       className="react-modal-content"
+      ariaHideApp={false}
     >
       <button className="react-modal-close" onClick={handleResetFarmAndClose}>
         <AiOutlineClose size={32} />

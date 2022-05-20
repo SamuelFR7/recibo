@@ -124,7 +124,7 @@ function EditReceiptModal({
         className="react-modal-close"
         onClick={handleResetReceiptAndClose}
       >
-        <AiOutlineClose />
+        <AiOutlineClose size={32} />
       </button>
       <FormContainer onSubmit={(e) => handleEditReceipt(e)}>
         <h2>Editar recibo</h2>

@@ -41,6 +41,7 @@ function PrintListModal({ isOpen, onRequestClose }: IPrintListModalProps) {
       onRequestClose={handleResetFarmToPrintAndClose}
       overlayClassName="react-modal-overlay"
       className="react-modal-content"
+      ariaHideApp={false}
     >
       <button
         className="react-modal-close"

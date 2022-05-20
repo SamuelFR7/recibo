@@ -1,5 +1,5 @@
 import Pagination from 'rc-pagination'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 
 import { Container } from './styles'
 
@@ -9,8 +9,8 @@ import api from '../../services/api'
 import { IReceiptsRequest } from '../../interfaces/IRceiptsRequest'
 
 export function PaginationContainer() {
-  const { currentPage, setCurrentPage } = useReceipts()
-  const [receiptsLength, setReceiptsLength] = useState(0)
+  const { currentPage, setCurrentPage, receiptsLength, setReceiptsLength } =
+    useReceipts()
 
   useEffect(() => {
     async function getPageLength() {

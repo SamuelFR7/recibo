@@ -18,7 +18,8 @@ import { IReceiptsRequest } from '../../interfaces/IRceiptsRequest'
 import { PrintListModal } from '../PrintListModal'
 
 function Dashboard() {
-  const { receipts, setReceipts, currentPage } = useReceipts()
+  const { receipts, setReceipts, currentPage, setReceiptsLength } =
+    useReceipts()
   const [isNewReceiptModalOpen, setIsNewReceiptModalOpen] = useState(false)
   const [isEditReceiptModalOpen, setIsEditReceiptModalOpen] = useState(false)
   const [isPrintListModalOpen, setIsPrintListModalOpen] = useState(false)
@@ -53,6 +54,7 @@ function Dashboard() {
     const response = await api.get<IReceiptsRequest>(
       `/api/recibo?PageNumber=${currentPage}`
     )
+    setReceiptsLength(response.data.totalRecords)
     setReceipts(response.data.data)
   }
 
@@ -84,7 +86,7 @@ function Dashboard() {
           <button type="button" onClick={handleOpenPrintListModal}>
             Imprimir Listagem
           </button>
-          <button type="button" onClick={handleOpenNewReceiptModal}>
+          <button type="button" onClick={() => console.log('Implementando...')}>
             Imprimir Recibos
           </button>
         </ButtonsBox>

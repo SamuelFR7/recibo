@@ -27,7 +27,7 @@ interface INewReceiptModalProps {
 }
 
 function NewReceiptModal({ isOpen, onRequestClose }: INewReceiptModalProps) {
-  const { setReceipts, currentPage } = useReceipts()
+  const { setReceipts, currentPage, setReceiptsLength } = useReceipts()
   const [todasFazendas, setTodasFazendas] = useState<IFarm[]>([])
   const [pagadorTipo, setPagadorTipo] = useState(0)
   const [beneficiarioTipo, setBeneficiarioTipo] = useState(0)
@@ -67,6 +67,7 @@ function NewReceiptModal({ isOpen, onRequestClose }: INewReceiptModalProps) {
     const response = await api.get<IReceiptsRequest>(
       `/api/recibo?PageNumber=${currentPage}`
     )
+    setReceiptsLength(response.data.totalRecords)
     setReceipts(response.data.data)
     handleResetReceiptAndClose()
   }
@@ -126,7 +127,7 @@ function NewReceiptModal({ isOpen, onRequestClose }: INewReceiptModalProps) {
         className="react-modal-close"
         onClick={handleResetReceiptAndClose}
       >
-        <AiOutlineClose />
+        <AiOutlineClose size={32} />
       </button>
       <FormContainer onSubmit={(e) => handleAddReceipt(e)}>
         <h2>Novo recibo</h2>

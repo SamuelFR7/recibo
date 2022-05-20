@@ -46,7 +46,6 @@ function FarmDashboard() {
   useEffect(() => {
     async function getFarmsData() {
       const response = await api.get<IFarm[]>('/api/fazenda')
-      console.log(response.data)
       setFarms(response.data)
     }
 
@@ -96,8 +95,7 @@ function FarmDashboard() {
                             'Certeza de que você deseja deletar este item?'
                           )
                         )
-                          console.log('a')
-                        handleDeleteFarm(item.id)
+                          handleDeleteFarm(item.id)
                       }}
                     >
                       <BiTrash size={32} />
