@@ -3,10 +3,10 @@ import { theme } from '../../styles/Theme'
 
 export const SidebarContainer = styled.div`
   display: flex;
+  height: 68rem;
 `
 
 export const SidebarContent = styled.div`
-  height: 100vh;
   padding: 2.5rem 2.5rem;
   display: flex;
   flex-direction: column;

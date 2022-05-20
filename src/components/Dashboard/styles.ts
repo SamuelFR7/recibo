@@ -4,7 +4,7 @@ import { theme } from '../../styles/Theme'
 export const DashboardContainer = styled.div``
 
 export const DashboardContent = styled.div`
-  padding: 9rem 10rem;
+  padding: 5rem 10rem;
 `
 
 export const ButtonsBox = styled.div`
@@ -34,7 +34,7 @@ export const ButtonsBox = styled.div`
 `
 
 export const TableContainer = styled.div`
-  margin-top: 2rem;
+  margin-top: 1rem;
 
   table {
     width: 100%;

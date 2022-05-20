@@ -12,7 +12,9 @@
   },
   "dependencies": {
     "axios": "^0.27.2",
+    "file-saver": "^2.0.5",
     "next": "^12.1.6",
+    "rc-pagination": "^3.1.16",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-icons": "^4.3.1",
@@ -24,6 +26,7 @@
   "devDependencies": {
     "@babel/core": "^7.17.12",
     "@eslint/create-config": "^0.1.2",
+    "@types/file-saver": "^2.0.5",
     "@types/node": "^17.0.31",
     "@types/react": "^18.0.8",
     "@types/react-input-mask": "^3.0.1",

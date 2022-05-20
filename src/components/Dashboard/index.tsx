@@ -11,12 +11,13 @@ import ReactTooltip from 'react-tooltip'
 import { BiExport, BiPencil, BiTrash } from 'react-icons/bi'
 import { NewReceiptModal } from '../NewReceiptModal'
 import api from '../../services/api'
-import { IReceipt } from '../../interfaces/IReceipt'
 import { useReceipts } from '../../hooks/useReceipts'
 import { EditReceiptModal } from '../EditReceiptModal'
+import { PaginationContainer } from '../Pagination'
+import { IReceiptsRequest } from '../../interfaces/IRceiptsRequest'
 
 function Dashboard() {
-  const { receipts, setReceipts } = useReceipts()
+  const { receipts, setReceipts, currentPage } = useReceipts()
   const [isNewReceiptModalOpen, setIsNewReceiptModalOpen] = useState(false)
   const [isEditReceiptModalOpen, setIsEditReceiptModalOpen] = useState(false)
   const [receiptToEdit, setReceiptToEdit] = useState(0)
@@ -40,18 +41,28 @@ function Dashboard() {
 
   async function handleDeleteReceipt(id: number) {
     await api.delete(`/api/recibo/${id}`)
-    const response = await api.get<IReceipt[]>('/api/recibo')
-    setReceipts(response.data)
+    const response = await api.get<IReceiptsRequest>(
+      `/api/recibo?PageNumber=${currentPage}`
+    )
+    setReceipts(response.data.data)
+  }
+
+  async function handlePrintOutReceipt(receiptId: number) {
+    window.open(
+      `${process.env.NEXT_PUBLIC_API_URL_API}/api/relatoriorecibo/unico?id=${receiptId}`
+    )
   }
 
   useEffect(() => {
     async function getReceiptsData() {
-      const response = await api.get<IReceipt[]>('/api/recibo')
-      setReceipts(response.data)
+      const response = await api.get<IReceiptsRequest>(
+        `/api/recibo?PageNumber=${currentPage}`
+      )
+      setReceipts(response.data.data)
     }
 
     getReceiptsData()
-  }, [])
+  }, [currentPage])
 
   return (
     <DashboardContainer>
@@ -88,7 +99,10 @@ function Dashboard() {
                   </td>
                   <td>
                     <ReactTooltip effect="solid" />
-                    <ImgButton data-tip="Imprimir">
+                    <ImgButton
+                      data-tip="Imprimir"
+                      onClick={() => handlePrintOutReceipt(item.id)}
+                    >
                       <BiExport size={32} />
                     </ImgButton>
                     <ReactTooltip effect="solid" />
@@ -117,6 +131,7 @@ function Dashboard() {
               ))}
             </tbody>
           </table>
+          <PaginationContainer />
           <NewReceiptModal
             isOpen={isNewReceiptModalOpen}
             onRequestClose={handleCloseNewReceiptModal}
