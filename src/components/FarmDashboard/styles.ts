@@ -4,7 +4,7 @@ import { theme } from '../../styles/Theme'
 export const FarmDashboardContainer = styled.div``
 
 export const FarmDashboardContent = styled.div`
-  padding: 9rem 10rem;
+  padding: 5rem 10rem;
 `
 
 export const FarmButtonsBox = styled.div`
@@ -34,7 +34,7 @@ export const FarmButtonsBox = styled.div`
 `
 
 export const FarmTableContainer = styled.div`
-  margin-top: 2rem;
+  margin-top: 1rem;
 
   table {
     width: 100%;
