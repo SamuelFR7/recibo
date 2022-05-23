@@ -31,7 +31,7 @@ function EditFarmModal({
   farmToEdit,
   setFarmToEdit,
 }: IEditFarmModalProps) {
-  const { setFarms } = useFarms()
+  const { setFarms, search } = useFarms()
   const [Nome, setNome] = useState('')
   const [pagadorNome, setPagadorNome] = useState('')
   const [pagadorEndereco, setPagadorEndereco] = useState('')
@@ -47,8 +47,15 @@ function EditFarmModal({
       pagadorEndereco,
       pagadorDocumento: pagadorDocumento.replace(/[^0-9]/g, ''),
     })
-    const response = await api.get<IFarm[]>('/api/fazenda')
-    setFarms(response.data)
+    if (search) {
+      const { data } = await api.get<IFarm[]>(
+        `/api/fazenda?nome=${search.toUpperCase()}`
+      )
+      setFarms(data)
+    } else {
+      const { data } = await api.get<IFarm[]>(`/api/fazenda`)
+      setFarms(data)
+    }
     handleResetFarmAndClose()
   }
 

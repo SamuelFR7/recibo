@@ -6,6 +6,7 @@ import { IFarm } from '../../interfaces/IFarm'
 import api from '../../services/api'
 import { EditFarmModal } from '../EditFarmModal'
 import { NewFarmModal } from '../NewFarmModal'
+import { SearchInputFarm } from '../SearchInputFarm'
 import {
   FarmButtonsBox,
   FarmDashboardContainer,
@@ -15,7 +16,7 @@ import {
 } from './styles'
 
 function FarmDashboard() {
-  const { farms, setFarms } = useFarms()
+  const { farms, setFarms, search } = useFarms()
   const [isNewFarmModalOpen, setIsNewFarmModalOpen] = useState(false)
   const [isEditFarmModalOpen, setIsEditFarmModalOpen] = useState(false)
   const [farmToEdit, setFarmToEdit] = useState(0)
@@ -39,8 +40,15 @@ function FarmDashboard() {
 
   async function handleDeleteFarm(id: number) {
     await api.delete(`/api/fazenda/${id}`)
-    const response = await api.get('/api/fazenda')
-    setFarms(response.data)
+    if (search) {
+      const { data } = await api.get<IFarm[]>(
+        `/api/fazenda?nome=${search.toUpperCase()}`
+      )
+      setFarms(data)
+    } else {
+      const { data } = await api.get<IFarm[]>(`/api/fazenda`)
+      setFarms(data)
+    }
   }
 
   useEffect(() => {
@@ -56,7 +64,7 @@ function FarmDashboard() {
     <FarmDashboardContainer>
       <FarmDashboardContent>
         <FarmButtonsBox>
-          <input placeholder="Pesquisar" type="search" />
+          <SearchInputFarm />
           <button type="button" onClick={handleOpenNewFarmModal}>
             Adicionar Fazenda
           </button>

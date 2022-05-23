@@ -8,6 +8,8 @@ interface IFarmsProviderProps {
 interface IFarmsContextData {
   farms: IFarm[]
   setFarms: React.Dispatch<React.SetStateAction<IFarm[]>>
+  search: string
+  setSearch: React.Dispatch<React.SetStateAction<string>>
 }
 
 export const FarmsContext = createContext<IFarmsContextData>(
@@ -16,9 +18,10 @@ export const FarmsContext = createContext<IFarmsContextData>(
 
 export function FarmsProvider({ children }: IFarmsProviderProps) {
   const [farms, setFarms] = useState<IFarm[]>([])
+  const [search, setSearch] = useState('')
 
   return (
-    <FarmsContext.Provider value={{ farms, setFarms }}>
+    <FarmsContext.Provider value={{ farms, setFarms, search, setSearch }}>
       {children}
     </FarmsContext.Provider>
   )
