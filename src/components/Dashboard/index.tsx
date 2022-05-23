@@ -16,9 +16,10 @@ import { EditReceiptModal } from '../EditReceiptModal'
 import { PaginationContainer } from '../Pagination'
 import { IReceiptsRequest } from '../../interfaces/IRceiptsRequest'
 import { PrintListModal } from '../PrintListModal'
+import { SearchInput } from '../SearchInput'
 
 function Dashboard() {
-  const { receipts, setReceipts, currentPage, setReceiptsLength } =
+  const { receipts, setReceipts, currentPage, setReceiptsLength, search } =
     useReceipts()
   const [isNewReceiptModalOpen, setIsNewReceiptModalOpen] = useState(false)
   const [isEditReceiptModalOpen, setIsEditReceiptModalOpen] = useState(false)
@@ -51,11 +52,19 @@ function Dashboard() {
 
   async function handleDeleteReceipt(id: number) {
     await api.delete(`/api/recibo/${id}`)
-    const response = await api.get<IReceiptsRequest>(
-      `/api/recibo?PageNumber=${currentPage}`
-    )
-    setReceiptsLength(response.data.totalRecords)
-    setReceipts(response.data.data)
+    if (search) {
+      const { data } = await api.get<IReceiptsRequest>(
+        `/api/recibo?nome=${search.toUpperCase()}`
+      )
+      setReceiptsLength(data.totalRecords)
+      setReceipts(data.data)
+    } else {
+      const { data } = await api.get<IReceiptsRequest>(
+        `/api/recibo?PageNumber=${currentPage}`
+      )
+      setReceiptsLength(data.totalRecords)
+      setReceipts(data.data)
+    }
   }
 
   async function handlePrintOutReceipt(receiptId: number) {
@@ -79,7 +88,7 @@ function Dashboard() {
     <DashboardContainer>
       <DashboardContent>
         <ButtonsBox>
-          <input placeholder="Pesquisar" type="search" />
+          <SearchInput />
           <button type="button" onClick={handleOpenNewReceiptModal}>
             Adicionar Recibo
           </button>

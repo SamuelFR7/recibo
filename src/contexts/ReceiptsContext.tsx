@@ -10,6 +10,8 @@ interface IReceiptsContextData {
   setReceipts: React.Dispatch<React.SetStateAction<IReceipt[]>>
   currentPage: number
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>
+  search: string
+  setSearch: React.Dispatch<React.SetStateAction<string>>
   receiptsLength: number
   setReceiptsLength: React.Dispatch<React.SetStateAction<number>>
 }
@@ -22,6 +24,7 @@ export function ReceiptsProvider({ children }: IReceiptsProviderProps) {
   const [receipts, setReceipts] = useState<IReceipt[]>([])
   const [currentPage, setCurrentPage] = useState(1)
   const [receiptsLength, setReceiptsLength] = useState(0)
+  const [search, setSearch] = useState('')
 
   return (
     <ReceiptsContext.Provider
@@ -30,6 +33,8 @@ export function ReceiptsProvider({ children }: IReceiptsProviderProps) {
         setReceipts,
         currentPage,
         setCurrentPage,
+        search,
+        setSearch,
         receiptsLength,
         setReceiptsLength,
       }}

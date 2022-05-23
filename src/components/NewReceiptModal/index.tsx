@@ -27,7 +27,7 @@ interface INewReceiptModalProps {
 }
 
 function NewReceiptModal({ isOpen, onRequestClose }: INewReceiptModalProps) {
-  const { setReceipts, currentPage, setReceiptsLength } = useReceipts()
+  const { setReceipts, currentPage, setReceiptsLength, search } = useReceipts()
   const [todasFazendas, setTodasFazendas] = useState<IFarm[]>([])
   const [pagadorTipo, setPagadorTipo] = useState(0)
   const [beneficiarioTipo, setBeneficiarioTipo] = useState(0)
@@ -64,11 +64,19 @@ function NewReceiptModal({ isOpen, onRequestClose }: INewReceiptModalProps) {
       PagadorEndereco,
       PagadorDocumento: PagadorDocumento.replace(/[^0-9]/g, ''),
     })
-    const response = await api.get<IReceiptsRequest>(
-      `/api/recibo?PageNumber=${currentPage}`
-    )
-    setReceiptsLength(response.data.totalRecords)
-    setReceipts(response.data.data)
+    if (search) {
+      const { data } = await api.get<IReceiptsRequest>(
+        `/api/recibo?nome=${search.toUpperCase()}`
+      )
+      setReceiptsLength(data.totalRecords)
+      setReceipts(data.data)
+    } else {
+      const { data } = await api.get<IReceiptsRequest>(
+        `/api/recibo?PageNumber=${currentPage}`
+      )
+      setReceiptsLength(data.totalRecords)
+      setReceipts(data.data)
+    }
     handleResetReceiptAndClose()
   }
 

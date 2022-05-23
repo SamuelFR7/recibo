@@ -35,7 +35,7 @@ function EditReceiptModal({
   receiptToEdit,
   setReceiptToEdit,
 }: IEditReceiptModalProps) {
-  const { setReceipts, currentPage } = useReceipts()
+  const { setReceipts, currentPage, search } = useReceipts()
   const [pagadorTipo, setPagadorTipo] = useState(0)
   const [beneficiarioTipo, setBeneficiarioTipo] = useState(0)
   const [Fazenda, setFazenda] = useState<IFarm>()
@@ -66,10 +66,17 @@ function EditReceiptModal({
       PagadorEndereco,
       PagadorDocumento: PagadorDocumento.replace(/[^0-9]/g, ''),
     })
-    const response = await api.get<IReceiptsRequest>(
-      `/api/recibo?PageNumber=${currentPage}`
-    )
-    setReceipts(response.data.data)
+    if (search) {
+      const { data } = await api.get<IReceiptsRequest>(
+        `/api/recibo?nome=${search.toUpperCase()}`
+      )
+      setReceipts(data.data)
+    } else {
+      const { data } = await api.get<IReceiptsRequest>(
+        `/api/recibo?PageNumber=${currentPage}`
+      )
+      setReceipts(data.data)
+    }
     handleResetReceiptAndClose()
   }
 
