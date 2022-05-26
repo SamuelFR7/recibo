@@ -4,7 +4,7 @@ import { theme } from '../../styles/Theme'
 export const FarmDashboardContainer = styled.div``
 
 export const FarmDashboardContent = styled.div`
-  padding: 5rem 10rem;
+  padding: 5rem 5rem;
 `
 
 export const FarmButtonsBox = styled.div`
@@ -29,7 +29,7 @@ export const FarmButtonsBox = styled.div`
     padding: 1rem 2rem;
     border: 0;
     border-radius: 0.25rem;
-    width: 65vw;
+    width: 50vw;
   }
 `
 

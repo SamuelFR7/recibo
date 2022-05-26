@@ -4,7 +4,7 @@ import { theme } from '../../styles/Theme'
 export const DashboardContainer = styled.div``
 
 export const DashboardContent = styled.div`
-  padding: 5rem 10rem;
+  padding: 5rem 5rem;
 `
 
 export const ButtonsBox = styled.div`
@@ -29,7 +29,7 @@ export const ButtonsBox = styled.div`
     padding: 1rem 2rem;
     border: 0;
     border-radius: 0.25rem;
-    width: 50vw;
+    width: 40vw;
   }
 `
 
