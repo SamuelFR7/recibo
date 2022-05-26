@@ -54,7 +54,7 @@ function PrintListModal({ isOpen, onRequestClose }: IPrintListModalProps) {
         <HighBox>
           <p>Fazenda</p>
           <select onChange={(e) => setFarmToPrint(Number(e.target.value))}>
-            <option value={0}>Todas</option>
+            <option value={0}>Todas Fazendas</option>
             {allFarms.map((item) => (
               <option key={item.id} value={item.id}>
                 {' '}
