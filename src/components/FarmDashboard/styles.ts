@@ -17,7 +17,7 @@ export const FarmButtonsBox = styled.div`
     background: ${theme.colors.green};
     border: 0;
     padding: 0 2rem;
-    border-radius: 0.25rem;
+    border-radius: 1rem;
     height: 3rem;
     transition: filter 0.2s;
     &:hover {
