@@ -21,7 +21,7 @@ function SearchInputFarm() {
 
   return (
     <input
-      placeholder="Pesquisar Beneficiário"
+      placeholder="Pesquisar Fazenda"
       type="search"
       onChange={(e) => handleChange(e.target.value)}
     />
