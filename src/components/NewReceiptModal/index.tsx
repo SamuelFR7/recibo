@@ -97,10 +97,8 @@ function NewReceiptModal({ isOpen, onRequestClose }: INewReceiptModalProps) {
   }
 
   function handleResetReceipt() {
-    setFazenda(0)
     setPagadorTipo(0)
     setBeneficiarioTipo(0)
-    setDataRecibo(new Date())
     setValor(0)
     setHistorico('')
     setBeneficiarioNome('')
