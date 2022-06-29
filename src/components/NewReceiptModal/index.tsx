@@ -96,6 +96,21 @@ function NewReceiptModal({ isOpen, onRequestClose }: INewReceiptModalProps) {
     onRequestClose()
   }
 
+  function handleResetReceipt() {
+    setFazenda(0)
+    setPagadorTipo(0)
+    setBeneficiarioTipo(0)
+    setDataRecibo(new Date())
+    setValor(0)
+    setHistorico('')
+    setBeneficiarioNome('')
+    setBeneficiarioEndereco('')
+    setBeneficiarioDocumento('')
+    setPagadorNome('')
+    setPagadorEndereco('')
+    setPagadorDocumento('')
+  }
+
   function handleSelectFarm(code: string) {
     const codigo = Number(code)
     setFazenda(codigo)
@@ -104,9 +119,12 @@ function NewReceiptModal({ isOpen, onRequestClose }: INewReceiptModalProps) {
     if (selectedFarm) {
       if (selectedFarm.pagadorNome) {
         setPagadorNome(selectedFarm.pagadorNome)
+        setPagadorNome('')
       }
       if (selectedFarm.pagadorEndereco) {
         setPagadorEndereco(selectedFarm.pagadorEndereco)
+      } else {
+        setPagadorEndereco('')
       }
       if (selectedFarm.pagadorDocumento) {
         if (selectedFarm.pagadorDocumento.length === 11) {
