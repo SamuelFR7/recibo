@@ -119,6 +119,7 @@ function NewReceiptModal({ isOpen, onRequestClose }: INewReceiptModalProps) {
     if (selectedFarm) {
       if (selectedFarm.pagadorNome) {
         setPagadorNome(selectedFarm.pagadorNome)
+      } else {
         setPagadorNome('')
       }
       if (selectedFarm.pagadorEndereco) {
