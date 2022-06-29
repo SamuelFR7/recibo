@@ -77,7 +77,7 @@ function NewReceiptModal({ isOpen, onRequestClose }: INewReceiptModalProps) {
       setReceiptsLength(data.totalRecords)
       setReceipts(data.data)
     }
-    handleResetReceiptAndClose()
+    handleResetReceipt()
   }
 
   function handleResetReceiptAndClose() {
