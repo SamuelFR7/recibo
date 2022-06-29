@@ -102,8 +102,12 @@ function NewReceiptModal({ isOpen, onRequestClose }: INewReceiptModalProps) {
     const selectedFarm = todasFazendas.find((element) => element.id === codigo)
 
     if (selectedFarm) {
-      setPagadorNome(selectedFarm.pagadorNome)
-      setPagadorEndereco(selectedFarm.pagadorEndereco)
+      if (selectedFarm.pagadorNome) {
+        setPagadorNome(selectedFarm.pagadorNome)
+      }
+      if (selectedFarm.pagadorEndereco) {
+        setPagadorEndereco(selectedFarm.pagadorEndereco)
+      }
       if (selectedFarm.pagadorDocumento) {
         if (selectedFarm.pagadorDocumento.length === 11) {
           setPagadorTipo(1)
