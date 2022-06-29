@@ -104,9 +104,6 @@ function NewReceiptModal({ isOpen, onRequestClose }: INewReceiptModalProps) {
     setBeneficiarioNome('')
     setBeneficiarioEndereco('')
     setBeneficiarioDocumento('')
-    setPagadorNome('')
-    setPagadorEndereco('')
-    setPagadorDocumento('')
   }
 
   function handleSelectFarm(code: string) {
