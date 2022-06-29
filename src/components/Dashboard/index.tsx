@@ -17,6 +17,7 @@ import { PaginationContainer } from '../Pagination'
 import { IReceiptsRequest } from '../../interfaces/IRceiptsRequest'
 import { PrintListModal } from '../PrintListModal'
 import { SearchInput } from '../SearchInput'
+import { PrintReceiptsModal } from '../PrintAllReceiptsModal'
 
 function Dashboard() {
   const { receipts, setReceipts, currentPage, setReceiptsLength, search } =
@@ -24,6 +25,8 @@ function Dashboard() {
   const [isNewReceiptModalOpen, setIsNewReceiptModalOpen] = useState(false)
   const [isEditReceiptModalOpen, setIsEditReceiptModalOpen] = useState(false)
   const [isPrintListModalOpen, setIsPrintListModalOpen] = useState(false)
+  const [isPrintReceiptsModalOpen, setIsPrintReceiptsModalOpen] =
+    useState(false)
   const [receiptToEdit, setReceiptToEdit] = useState(0)
 
   function handleCloseNewReceiptModal() {
@@ -41,6 +44,15 @@ function Dashboard() {
   function handleOpenNewReceiptModal() {
     setIsNewReceiptModalOpen(true)
   }
+
+  function handleOpenPrintReceiptsModal() {
+    setIsPrintReceiptsModalOpen(true)
+  }
+
+  function handleClosePrintReceiptsModal() {
+    setIsPrintReceiptsModalOpen(false)
+  }
+
   function handleOpenEditReceiptModal(id: number) {
     setReceiptToEdit(id)
     setIsEditReceiptModalOpen(true)
@@ -95,7 +107,7 @@ function Dashboard() {
           <button type="button" onClick={handleOpenPrintListModal}>
             Imprimir Listagem
           </button>
-          <button type="button" onClick={() => console.log('Implementando...')}>
+          <button type="button" onClick={handleOpenPrintReceiptsModal}>
             Imprimir Recibos
           </button>
         </ButtonsBox>
@@ -171,6 +183,10 @@ function Dashboard() {
           <PrintListModal
             isOpen={isPrintListModalOpen}
             onRequestClose={handleClosePrintListModal}
+          />
+          <PrintReceiptsModal
+            isOpen={isPrintReceiptsModalOpen}
+            onRequestClose={handleClosePrintReceiptsModal}
           />
         </TableContainer>
       </DashboardContent>
